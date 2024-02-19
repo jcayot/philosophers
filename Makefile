@@ -19,7 +19,7 @@ all:  $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(HEADERS) -o $(NAME)
 
 clean:
