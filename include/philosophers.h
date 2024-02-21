@@ -41,6 +41,8 @@ typedef struct s_philosopher
 	int				*dead;
 	pthread_mutex_t	*dead_mutex;
 	t_rules			rules;
+	struct timeval	last_meal;
+	struct timeval	start_time;
 }	t_philosopher;
 
 t_philo_arg	parse_arguments(int n, char *args[]);
@@ -49,5 +51,7 @@ int			make_philosophers(t_philo_arg arg, int *dead,
 int			clear_philosophers(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
 void		*ft_philosopher(void *philo_ptr);
+void		*monitor_philo(void *philo_ptr);
+void		print_status(int n, char *status, const int *dead, long time);
 
 #endif //PHILOSOPHERS_H

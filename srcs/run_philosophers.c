@@ -20,6 +20,7 @@ void	wait_philosophers(int n, t_philosopher *philosopher)
 	while (i < n)
 	{
 		pthread_join(philosopher[i].thread, NULL);
+		pthread_detach(philosopher[i].thread);
 		i++;
 	}
 }
@@ -27,10 +28,13 @@ void	wait_philosophers(int n, t_philosopher *philosopher)
 int	run_philosophers(int n, t_philosopher *philosophers)
 {
 	int	i;
+	struct timeval	start_time;
 
 	i = 0;
+	gettimeofday(&start_time, NULL);
 	while (i < n)
 	{
+		philosophers[i].start_time = start_time;
 		if (pthread_create(&(philosophers[i].thread), NULL,
 				&ft_philosopher, &philosophers[i]) != 0)
 		{

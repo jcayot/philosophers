@@ -11,6 +11,7 @@ SRCS			:= $(SRCS_DIR)/philosophers.c \
 					$(SRCS_DIR)/make_philosophers.c \
 					$(SRCS_DIR)/run_philosophers.c \
 					$(SRCS_DIR)/ft_philosopher.c \
+					$(SRCS_DIR)/philo_monitor.c \
 					$(UTILS_DIR)/philotoi.c \
 					$(UTILS_DIR)/getmstime.c
 

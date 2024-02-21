@@ -18,40 +18,45 @@ void print_status(int n, char *status, const int *dead, long time)
 		printf("%ld %d %s\n", time, n, status);
 }
 
-void	ft_eat(t_philosopher *philosopher)
+void	ft_eat(t_philosopher *philo)
 {
-	if (philosopher -> number % 2 == 0)
-		pthread_mutex_lock(philosopher->left_fork);
+	if (philo -> number % 2 == 0)
+		pthread_mutex_lock(philo->left_fork);
 	else
-		pthread_mutex_lock(philosopher->right_fork);
-	print_status(philosopher->number, "has taken a fork", philosopher->dead, getmstime());
-	if (philosopher -> number % 2 == 0)
-		pthread_mutex_lock(philosopher->right_fork);
+		pthread_mutex_lock(philo->right_fork);
+	print_status(philo->number, "has taken a fork", philo->dead, getmststamp(philo->start_time));
+	if (philo -> number % 2 == 0)
+		pthread_mutex_lock(philo->right_fork);
 	else
-		pthread_mutex_lock(philosopher->left_fork);
-	print_status(philosopher->number, "has taken a fork", philosopher->dead, getmstime());
-	print_status(philosopher->number, "is eating", philosopher->dead, getmstime());
-	usleep(philosopher -> rules.eat_time * 1000);
-	pthread_mutex_unlock(philosopher->left_fork);
-	pthread_mutex_unlock(philosopher->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+	print_status(philo->number, "has taken a fork", philo->dead, getmststamp(philo->start_time));
+	gettimeofday(&philo -> last_meal, NULL);
+	print_status(philo->number, "is eating", philo->dead, getmststamp(philo->start_time));
+	usleep(philo -> rules.eat_time * 1000);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }
 
-void	ft_sleep(t_philosopher *philosopher)
+void	ft_sleep(t_philosopher *philo)
 {
-	print_status(philosopher->number, "is sleeping", philosopher->dead, getmstime());
-	usleep(philosopher -> rules.sleep_time * 1000);
+	print_status(philo->number, "is sleeping", philo->dead, getmststamp(philo->start_time));
+	usleep(philo -> rules.sleep_time * 1000);
 }
 
-void	ft_think(t_philosopher *philosopher)
+void	ft_think(t_philosopher *philo)
 {
-	print_status(philosopher->number, "is thinking", philosopher->dead, getmstime());
+	print_status(philo->number, "is thinking", philo->dead, getmststamp(philo->start_time));
 }
 
 void	*ft_philosopher(void *philo_ptr)
 {
 	t_philosopher	*philosopher;
+	pthread_t		monitor_thread;
 
 	philosopher = (t_philosopher *) philo_ptr;
+	philosopher -> last_meal = philosopher -> start_time;
+	if (pthread_create(&monitor_thread, NULL, &monitor_philo, philosopher) != 0)
+		return (NULL);
 	while (!*philosopher -> dead)
 	{
 		ft_eat(philosopher);

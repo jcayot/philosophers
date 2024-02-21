@@ -18,6 +18,6 @@
 # include <stdlib.h>
 
 int		philotoi(char *s);
-long	getmstime(void);
+long getmststamp(struct timeval startime);
 
 #endif //PHILO_UTILS_H

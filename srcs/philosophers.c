@@ -23,7 +23,7 @@ int	philosophers(int n, char *args[])
 	if (arg.n_philos < 1)
 		return (EXIT_FAILURE);
 	dead = 0;
-	philosophers = malloc(arg.n_philos * sizeof (t_philosopher));
+	philosophers = malloc((arg.n_philos) * sizeof (t_philosopher));
 	if (!philosophers)
 		return (EXIT_FAILURE);
 	result = EXIT_FAILURE;

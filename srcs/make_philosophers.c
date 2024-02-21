@@ -47,7 +47,7 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 {
 	int				i;
 
-	philosophers -> dead_mutex = new_mutex();
+	philosophers[0].dead_mutex = new_mutex();
 	if (!philosophers -> dead_mutex)
 		return (0);
 	i = 0;
@@ -56,7 +56,7 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 		philosophers[i].number = i;
 		philosophers[i].dead = dead;
 		philosophers[i].rules = arg.rules;
-		philosophers[i].dead_mutex = philosophers -> dead_mutex;
+		philosophers[i].dead_mutex = philosophers[0].dead_mutex;
 		philosophers[i].left_fork = new_mutex();
 		if (!philosophers[i].left_fork)
 			return (clear_philosophers(i, philosophers));
