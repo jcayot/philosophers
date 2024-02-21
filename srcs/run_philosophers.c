@@ -31,7 +31,8 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 	i = 0;
 	while (i < n)
 	{
-		if (pthread_create(&(philosophers[i].thread), NULL, &ft_philosopher, &philosophers[i]) != 0)
+		if (pthread_create(&(philosophers[i].thread), NULL,
+				&ft_philosopher, &philosophers[i]) != 0)
 		{
 			wait_philosophers(i, philosophers);
 			return (0);

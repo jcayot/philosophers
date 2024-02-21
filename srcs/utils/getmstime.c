@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.h                                      :+:      :+:    :+:   */
+/*   getmstime.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 22:18:08 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/18 22:18:11 by jcayot           ###   ########.fr       */
+/*   Created: 2024/02/21 14:46:20 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/21 14:46:22 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_UTILS_H
-# define PHILO_UTILS_H
+#include <philo_utils.h>
 
-# include <limits.h>
-# include <sys/time.h>
-# include <stdlib.h>
+long	getmstime(void)
+{
+	struct timeval	time;
 
-int		philotoi(char *s);
-long	getmstime(void);
-
-#endif //PHILO_UTILS_H
+	gettimeofday(&time, NULL);
+	return ((long) (time.tv_sec * 1000) + (long) (time.tv_usec / 1000));
+}

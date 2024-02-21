@@ -14,9 +14,7 @@
 # define PHILOSOPHERS_H
 
 # include <unistd.h>
-# include <stdlib.h>
 # include <stdio.h>
-# include <sys/time.h>
 # include <pthread.h>
 # include <philo_utils.h>
 
@@ -30,8 +28,8 @@ typedef struct s_rules
 
 typedef struct s_philosophers_arg
 {
-	int	n_philos;
-	t_rules rules;
+	int		n_philos;
+	t_rules	rules;
 }	t_philo_arg;
 
 typedef struct s_philosopher
@@ -46,7 +44,8 @@ typedef struct s_philosopher
 }	t_philosopher;
 
 t_philo_arg	parse_arguments(int n, char *args[]);
-int			make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers);
+int			make_philosophers(t_philo_arg arg, int *dead,
+				t_philosopher *philosophers);
 int			clear_philosophers(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
 void		*ft_philosopher(void *philo_ptr);
