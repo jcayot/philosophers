@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_philosopher.c                                   :+:      :+:    :+:   */
+/*   philosopher_thread.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -42,7 +42,7 @@ void	ft_think(t_philosopher *philo)
 	print_status(philo->number, "is thinking", philo->dead, getmsstamp(*philo->start_time));
 }
 
-void	*ft_philosopher(void *philo_ptr)
+void	*philosopher_thread(void *philo_ptr)
 {
 	t_philosopher	*philosopher;
 	pthread_t		monitor_thread;
@@ -56,6 +56,8 @@ void	*ft_philosopher(void *philo_ptr)
 	philosopher -> last_meal = *philosopher -> start_time;
 	if (!make_monitor_thread(&monitor_thread, philosopher))
 		return (NULL);
+	if (philosopher -> number % 2 != 0)
+		stupid_sleep(5);
 	while (!*philosopher -> dead)
 	{
 		ft_eat(philosopher);

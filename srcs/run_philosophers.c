@@ -38,7 +38,7 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 		philosophers[i].start_time = &start_time;
 		philosophers[i].start = &start;
 		if (pthread_create(&(philosophers[i].thread), NULL,
-				&ft_philosopher, &philosophers[i]) != 0)
+						   &philosopher_thread, &philosophers[i]) != 0)
 		{
 			*philosophers -> dead = 1;
 			wait_philosophers(i, philosophers);
