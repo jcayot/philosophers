@@ -13,7 +13,6 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# include <unistd.h>
 # include <stdio.h>
 # include <pthread.h>
 # include <philo_utils.h>
@@ -42,7 +41,8 @@ typedef struct s_philosopher
 	pthread_mutex_t	*dead_mutex;
 	t_rules			rules;
 	struct timeval	last_meal;
-	struct timeval	start_time;
+	struct timeval	*start_time;
+	int 			*start;
 }	t_philosopher;
 
 t_philo_arg	parse_arguments(int n, char *args[]);
@@ -51,7 +51,7 @@ int			make_philosophers(t_philo_arg arg, int *dead,
 int			clear_philosophers(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
 void		*ft_philosopher(void *philo_ptr);
-void		*monitor_philo(void *philo_ptr);
-void		print_status(int n, char *status, const int *dead, long time);
+int			make_monitor_thread(pthread_t *thread, t_philosopher *philosopher);
+void		print_status(int n, char *status, const int *dead, unsigned long time);
 
 #endif //PHILOSOPHERS_H

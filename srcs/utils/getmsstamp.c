@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.h                                      :+:      :+:    :+:   */
+/*   getmsstamp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 22:18:08 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/18 22:18:11 by jcayot           ###   ########.fr       */
+/*   Created: 2024/02/21 14:46:20 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/21 14:46:22 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_UTILS_H
-# define PHILO_UTILS_H
+#include <philo_utils.h>
 
-# include <unistd.h>
-# include <limits.h>
-# include <sys/time.h>
-# include <stdlib.h>
+unsigned long getmsstamp(struct timeval startime)
+{
+	struct timeval	time;
+	unsigned long	timestamp;
 
-int				philotoi(char *s);
-unsigned long	get_ms_time(void);
-unsigned long	getmsstamp(struct timeval startime);
-void			stupid_sleep(unsigned long mstime);
-
-#endif //PHILO_UTILS_H
+	gettimeofday(&time, NULL);
+	timestamp = (time.tv_sec - startime.tv_sec) * 1000lu;
+	timestamp += (long) ((long) time.tv_usec - (long) startime.tv_usec) / 1000l;
+	return (timestamp);
+}

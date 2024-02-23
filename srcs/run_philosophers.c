@@ -27,22 +27,27 @@ void	wait_philosophers(int n, t_philosopher *philosopher)
 
 int	run_philosophers(int n, t_philosopher *philosophers)
 {
-	int	i;
+	int				i;
 	struct timeval	start_time;
+	int 			start;
 
 	i = 0;
-	gettimeofday(&start_time, NULL);
+	start = 0;
 	while (i < n)
 	{
-		philosophers[i].start_time = start_time;
+		philosophers[i].start_time = &start_time;
+		philosophers[i].start = &start;
 		if (pthread_create(&(philosophers[i].thread), NULL,
 				&ft_philosopher, &philosophers[i]) != 0)
 		{
+			*philosophers -> dead = 1;
 			wait_philosophers(i, philosophers);
 			return (0);
 		}
 		i++;
 	}
+	gettimeofday(&start_time, NULL);
+	start = 1;
 	wait_philosophers(n, philosophers);
 	return (1);
 }
