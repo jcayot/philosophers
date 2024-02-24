@@ -19,9 +19,9 @@ int	is_starving(unsigned long last_meal, unsigned long die_time)
 
 int	monitoring_loop(t_philosopher *philo)
 {
-	while (!is_starving(philo -> last_meal, philo -> rules.die_time))
+	while (1)
 	{
-		if (*philo -> dead)
+		if (*philo -> dead || philo -> rules.lunch_number == 0)
 			return (0);
 		if (is_starving(philo -> last_meal, philo -> rules.die_time))
 		{

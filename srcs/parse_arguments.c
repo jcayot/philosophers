@@ -35,7 +35,7 @@ t_philo_arg	parse_arguments(int n, char *args[])
 			return (arg);
 	}
 	else
-		arg.rules.lunch_number = 0;
+		arg.rules.lunch_number = -1;
 	arg.n_philos = philotoi(args[1]);
 	return (arg);
 }
