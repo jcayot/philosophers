@@ -60,6 +60,13 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 		philosophers[i].left_fork = new_mutex();
 		if (!philosophers[i].left_fork)
 			return (clear_philosophers(i, philosophers));
+		philosophers[i].eating_mutex = new_mutex();
+		if (!philosophers[i].eating_mutex)
+		{
+			pthread_mutex_destroy(philosophers[i].eating_mutex);
+			free(philosophers[i].eating_mutex);
+			return (clear_philosophers(i, philosophers));
+		}
 		if (i != 0)
 			philosophers[i - 1].right_fork = philosophers[i].left_fork;
 		i++;

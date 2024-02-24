@@ -24,9 +24,14 @@ void	ft_eat(t_philosopher *philo)
 	else
 		pthread_mutex_lock(philo->left_fork);
 	print_status(philo->number, "has taken a fork", philo->dead, get_ms_stamp(*philo->start_time));
-	philo -> last_meal = get_ms_time();
-	print_status(philo->number, "is eating", philo->dead, get_ms_stamp(*philo->start_time));
-	stupid_sleep(philo -> rules.eat_time);
+	pthread_mutex_lock(philo -> eating_mutex);
+	if (!*philo -> dead)
+	{
+		philo -> last_meal = get_ms_time();
+		print_status(philo->number, "is eating", philo->dead, get_ms_stamp(*philo->start_time));
+		stupid_sleep(philo -> rules.eat_time);
+	}
+	pthread_mutex_unlock(philo -> eating_mutex);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }

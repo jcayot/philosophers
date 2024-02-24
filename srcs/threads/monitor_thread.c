@@ -27,6 +27,13 @@ void	*monitor_philo(void *philo_ptr)
 	{
 		if (*philosopher -> dead)
 			return (NULL);
+		if (is_starving(philosopher -> last_meal, philosopher -> rules.die_time))
+		{
+			pthread_mutex_lock(philosopher -> eating_mutex);
+			if (is_starving(philosopher -> last_meal, philosopher -> rules.die_time))
+				break ;
+			pthread_mutex_unlock(philosopher -> eating_mutex);
+		}
 	}
 	die_time = get_ms_stamp(*philosopher->start_time);
 	pthread_mutex_lock(philosopher -> dead_mutex);
@@ -36,6 +43,7 @@ void	*monitor_philo(void *philo_ptr)
 		printf("%ld %d died\n", die_time, philosopher -> number);
 	}
 	pthread_mutex_unlock(philosopher -> dead_mutex);
+	pthread_mutex_unlock(philosopher -> eating_mutex);
 	return (NULL);
 }
 
