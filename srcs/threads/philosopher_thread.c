@@ -18,14 +18,14 @@ void	ft_eat(t_philosopher *philo)
 		pthread_mutex_lock(philo->left_fork);
 	else
 		pthread_mutex_lock(philo->right_fork);
-	print_status(philo->number, "has taken a fork", philo->dead, getmsstamp(*philo->start_time));
+	print_status(philo->number, "has taken a fork", philo->dead, get_ms_stamp(*philo->start_time));
 	if (philo -> number % 2 == 0)
 		pthread_mutex_lock(philo->right_fork);
 	else
 		pthread_mutex_lock(philo->left_fork);
-	print_status(philo->number, "has taken a fork", philo->dead, getmsstamp(*philo->start_time));
-	gettimeofday(&philo -> last_meal, NULL);
-	print_status(philo->number, "is eating", philo->dead, getmsstamp(*philo->start_time));
+	print_status(philo->number, "has taken a fork", philo->dead, get_ms_stamp(*philo->start_time));
+	philo -> last_meal = get_ms_time();
+	print_status(philo->number, "is eating", philo->dead, get_ms_stamp(*philo->start_time));
 	stupid_sleep(philo -> rules.eat_time);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -33,13 +33,14 @@ void	ft_eat(t_philosopher *philo)
 
 void	ft_sleep(t_philosopher *philo)
 {
-	print_status(philo->number, "is sleeping", philo->dead, getmsstamp(*philo->start_time));
+	print_status(philo->number, "is sleeping", philo->dead, get_ms_stamp(*philo->start_time));
 	stupid_sleep(philo -> rules.sleep_time);
 }
 
 void	ft_think(t_philosopher *philo)
 {
-	print_status(philo->number, "is thinking", philo->dead, getmsstamp(*philo->start_time));
+	print_status(philo->number, "is thinking", philo->dead, get_ms_stamp(*philo->start_time));
+	stupid_sleep(1);
 }
 
 void	*philosopher_thread(void *philo_ptr)
@@ -57,7 +58,7 @@ void	*philosopher_thread(void *philo_ptr)
 	if (!make_monitor_thread(&monitor_thread, philosopher))
 		return (NULL);
 	if (philosopher -> number % 2 != 0)
-		stupid_sleep(5);
+		stupid_sleep(1);
 	while (!*philosopher -> dead)
 	{
 		ft_eat(philosopher);

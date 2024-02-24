@@ -16,7 +16,7 @@ SRCS			:= $(SRCS_DIR)/philosophers.c \
 					$(THREADS_DIR)/print_status.c \
 					$(UTILS_DIR)/philotoi.c \
 					$(UTILS_DIR)/get_ms_time.c \
-					$(UTILS_DIR)/getmsstamp.c \
+					$(UTILS_DIR)/get_ms_stamp.c \
 					$(UTILS_DIR)/stupid_sleep.c
 
 OBJS			:= ${SRCS:.c=.o}

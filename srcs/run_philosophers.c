@@ -28,7 +28,7 @@ void	wait_philosophers(int n, t_philosopher *philosopher)
 int	run_philosophers(int n, t_philosopher *philosophers)
 {
 	int				i;
-	struct timeval	start_time;
+	unsigned long	start_time;
 	int 			start;
 
 	i = 0;
@@ -46,7 +46,7 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 		}
 		i++;
 	}
-	gettimeofday(&start_time, NULL);
+	start_time = get_ms_time();
 	start = 1;
 	wait_philosophers(n, philosophers);
 	return (1);

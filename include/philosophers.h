@@ -40,8 +40,8 @@ typedef struct s_philosopher
 	int				*dead;
 	pthread_mutex_t	*dead_mutex;
 	t_rules			rules;
-	struct timeval	last_meal;
-	struct timeval	*start_time;
+	unsigned long	last_meal;
+	unsigned long	*start_time;
 	int 			*start;
 }	t_philosopher;
 
