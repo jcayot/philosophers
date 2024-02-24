@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_status.c                                     :+:      :+:    :+:   */
+/*   philo_log.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include <philosophers.h>
 
-void	print_status(int n, char *status, const int *dead, unsigned long time)
+void	philo_log(int n, char *status, const int *dead, unsigned long time)
 {
 	if (!*dead)
 		printf("%lu %d %s\n", time, n, status);

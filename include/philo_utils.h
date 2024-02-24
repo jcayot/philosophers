@@ -20,7 +20,7 @@
 
 int				philotoi(char *s);
 unsigned long	get_ms_time(void);
-unsigned long	get_ms_stamp(unsigned long startime);
+unsigned long	stamp(unsigned long startime);
 void			stupid_sleep(unsigned long mstime);
 
 #endif //PHILO_UTILS_H

@@ -34,7 +34,7 @@ typedef struct s_philosophers_arg
 typedef struct s_philosopher
 {
 	pthread_t		thread;
-	int				number;
+	int				n;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	int				*dead;
@@ -42,7 +42,7 @@ typedef struct s_philosopher
 	pthread_mutex_t	*eating_mutex;
 	t_rules			rules;
 	unsigned long	last_meal;
-	unsigned long	*start_time;
+	unsigned long	*init;
 	int				*start;
 }	t_philosopher;
 
@@ -53,7 +53,7 @@ int			clear_philosophers(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
 void		*philosopher_thread(void *philo_ptr);
 int			make_monitor_thread(pthread_t *thread, t_philosopher *philosopher);
-void		print_status(int n, char *status, const int *dead,
+void		philo_log(int n, char *status, const int *dead,
 				unsigned long time);
 
 #endif //PHILOSOPHERS_H

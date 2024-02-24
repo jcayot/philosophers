@@ -42,12 +42,12 @@ void	*monitor_philo(void *philo_ptr)
 	philosopher = (t_philosopher *) philo_ptr;
 	if (monitoring_loop(philosopher))
 	{
-		die_time = get_ms_stamp(*philosopher->start_time);
+		die_time = stamp(*philosopher->init);
 		pthread_mutex_lock(philosopher -> dead_mutex);
 		if (!*philosopher -> dead)
 		{
 			*philosopher -> dead = 1;
-			printf("%ld %d died\n", die_time, philosopher -> number);
+			printf("%ld %d died\n", die_time, philosopher -> n);
 		}
 		pthread_mutex_unlock(philosopher -> dead_mutex);
 		pthread_mutex_unlock(philosopher -> eating_mutex);

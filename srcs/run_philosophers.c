@@ -35,7 +35,7 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 	start = 0;
 	while (i < n)
 	{
-		philosophers[i].start_time = &start_time;
+		philosophers[i].init = &start_time;
 		philosophers[i].start = &start;
 		if (pthread_create(&(philosophers[i].thread), NULL,
 				&philosopher_thread, &philosophers[i]) != 0)

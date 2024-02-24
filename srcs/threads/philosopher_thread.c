@@ -12,26 +12,44 @@
 
 #include <philosophers.h>
 
-void	ft_eat(t_philosopher *philo)
+void	ft_eat_even(t_philosopher *philo)
 {
-	if (philo -> number % 2 == 0)
-		pthread_mutex_lock(philo->left_fork);
-	else
+	pthread_mutex_lock(philo->left_fork);
+	philo_log(philo->n, "has taken a fork", philo->dead, stamp(*philo->init));
+	if (philo -> right_fork)
+	{
 		pthread_mutex_lock(philo->right_fork);
-	print_status(philo->number, "has taken a fork",
-		philo->dead, get_ms_stamp(*philo->start_time));
-	if (philo -> number % 2 == 0)
-		pthread_mutex_lock(philo->right_fork);
+		philo_log(philo->n, "has taken a fork", philo->dead,
+			stamp(*philo->init));
+		pthread_mutex_lock(philo -> eating_mutex);
+		if (!*philo -> dead)
+		{
+			philo -> last_meal = get_ms_time();
+			philo_log(philo->n, "is eating", philo->dead, stamp(*philo->init));
+			stupid_sleep(philo -> rules.eat_time);
+		}
+		pthread_mutex_unlock(philo -> eating_mutex);
+		pthread_mutex_unlock(philo->right_fork);
+	}
 	else
-		pthread_mutex_lock(philo->left_fork);
-	print_status(philo->number, "has taken a fork",
-		philo->dead, get_ms_stamp(*philo->start_time));
+	{
+		while (!*philo->dead)
+			;
+	}
+	pthread_mutex_unlock(philo->left_fork);
+}
+
+void	ft_eat_odd(t_philosopher *philo)
+{
+	pthread_mutex_lock(philo -> right_fork);
+	philo_log(philo->n, "has taken a fork", philo->dead, stamp(*philo->init));
+	pthread_mutex_lock(philo->left_fork);
+	philo_log(philo->n, "has taken a fork", philo->dead, stamp(*philo->init));
 	pthread_mutex_lock(philo -> eating_mutex);
 	if (!*philo -> dead)
 	{
 		philo -> last_meal = get_ms_time();
-		print_status(philo->number, "is eating",
-			philo->dead, get_ms_stamp(*philo->start_time));
+		philo_log(philo->n, "is eating", philo->dead, stamp(*philo->init));
 		stupid_sleep(philo -> rules.eat_time);
 	}
 	pthread_mutex_unlock(philo -> eating_mutex);
@@ -41,15 +59,13 @@ void	ft_eat(t_philosopher *philo)
 
 void	ft_sleep(t_philosopher *philo)
 {
-	print_status(philo->number, "is sleeping", philo->dead,
-		get_ms_stamp(*philo->start_time));
+	philo_log(philo->n, "is sleeping", philo->dead, stamp(*philo->init));
 	stupid_sleep(philo -> rules.sleep_time);
 }
 
 void	ft_think(t_philosopher *philo)
 {
-	print_status(philo->number, "is thinking", philo->dead,
-		get_ms_stamp(*philo->start_time));
+	philo_log(philo->n, "is thinking", philo->dead, stamp(*philo->init));
 	stupid_sleep(1);
 }
 
@@ -64,14 +80,17 @@ void	*philosopher_thread(void *philo_ptr)
 		if (*philosopher->dead)
 			return (NULL);
 	}
-	philosopher -> last_meal = *philosopher -> start_time;
+	philosopher -> last_meal = *philosopher -> init;
 	if (!make_monitor_thread(&monitor_thread, philosopher))
 		return (NULL);
-	if (philosopher -> number % 2 != 0)
+	if (philosopher -> n % 2 != 0)
 		stupid_sleep(1);
 	while (!*philosopher -> dead)
 	{
-		ft_eat(philosopher);
+		if (philosopher -> n % 2 == 0)
+			ft_eat_even(philosopher);
+		else
+			ft_eat_odd(philosopher);
 		ft_sleep(philosopher);
 		ft_think(philosopher);
 	}

@@ -68,7 +68,7 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 	i = 0;
 	while (i < arg.n_philos)
 	{
-		philosophers[i].number = i;
+		philosophers[i].n = i;
 		philosophers[i].dead = dead;
 		philosophers[i].rules = arg.rules;
 		philosophers[i].dead_mutex = philosophers[0].dead_mutex;
@@ -78,7 +78,9 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 			philosophers[i - 1].right_fork = philosophers[i].left_fork;
 		i++;
 	}
-	if (i > 0)
+	if (i > 1)
 		philosophers[i - 1].right_fork = philosophers[0].left_fork;
+	else
+		philosophers[i - 1].right_fork = NULL;
 	return (1);
 }
