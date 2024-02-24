@@ -1,10 +1,18 @@
-//
-// Created by jules on 23/02/2024.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_ms_time.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/24 12:46:17 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/24 12:46:18 by jcayot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <philo_utils.h>
 
-unsigned long get_ms_time(void)
+unsigned long	get_ms_time(void)
 {
 	struct timeval	time;
 

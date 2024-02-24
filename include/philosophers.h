@@ -43,7 +43,7 @@ typedef struct s_philosopher
 	t_rules			rules;
 	unsigned long	last_meal;
 	unsigned long	*start_time;
-	int 			*start;
+	int				*start;
 }	t_philosopher;
 
 t_philo_arg	parse_arguments(int n, char *args[]);
@@ -53,6 +53,7 @@ int			clear_philosophers(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
 void		*philosopher_thread(void *philo_ptr);
 int			make_monitor_thread(pthread_t *thread, t_philosopher *philosopher);
-void		print_status(int n, char *status, const int *dead, unsigned long time);
+void		print_status(int n, char *status, const int *dead,
+				unsigned long time);
 
 #endif //PHILOSOPHERS_H

@@ -12,7 +12,7 @@
 
 #include <philo_utils.h>
 
-unsigned long get_ms_stamp(unsigned long startime)
+unsigned long	get_ms_stamp(unsigned long startime)
 {
 	return (get_ms_time() - startime);
 }

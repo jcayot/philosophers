@@ -43,6 +43,21 @@ int	clear_philosophers(int n, t_philosopher *philosophers)
 	return (0);
 }
 
+int	make_mutexs(t_philosopher *philosopher)
+{
+	philosopher->left_fork = new_mutex();
+	if (!philosopher->left_fork)
+		return (0);
+	philosopher->eating_mutex = new_mutex();
+	if (!philosopher->eating_mutex)
+	{
+		pthread_mutex_destroy(philosopher->left_fork);
+		free(philosopher->left_fork);
+		return (0);
+	}
+	return (1);
+}
+
 int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 {
 	int				i;
@@ -57,16 +72,8 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 		philosophers[i].dead = dead;
 		philosophers[i].rules = arg.rules;
 		philosophers[i].dead_mutex = philosophers[0].dead_mutex;
-		philosophers[i].left_fork = new_mutex();
-		if (!philosophers[i].left_fork)
+		if (!make_mutexs(&philosophers[i]))
 			return (clear_philosophers(i, philosophers));
-		philosophers[i].eating_mutex = new_mutex();
-		if (!philosophers[i].eating_mutex)
-		{
-			pthread_mutex_destroy(philosophers[i].eating_mutex);
-			free(philosophers[i].eating_mutex);
-			return (clear_philosophers(i, philosophers));
-		}
 		if (i != 0)
 			philosophers[i - 1].right_fork = philosophers[i].left_fork;
 		i++;
