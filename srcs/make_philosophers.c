@@ -35,7 +35,9 @@ int	clear_philosophers(int n, t_philosopher *philosophers)
 	while (i < n)
 	{
 		pthread_mutex_destroy(philosophers[i].left_fork);
+		pthread_mutex_destroy(philosophers[i].eating_mutex);
 		free(philosophers[i].left_fork);
+		free(philosophers[i].eating_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(philosophers->dead_mutex);
