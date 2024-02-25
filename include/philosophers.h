@@ -43,7 +43,6 @@ typedef struct s_philosopher
 	t_rules			rules;
 	unsigned long	last_meal;
 	unsigned long	*init;
-	int				*start;
 }	t_philosopher;
 
 t_philo_arg	parse_arguments(int n, char *args[]);

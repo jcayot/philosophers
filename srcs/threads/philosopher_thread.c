@@ -86,11 +86,6 @@ void	*philosopher_thread(void *philo_ptr)
 	pthread_t		monitor_thread;
 
 	philo = (t_philosopher *) philo_ptr;
-	while (*philo->start == 0)
-	{
-		if (*philo->dead)
-			return (NULL);
-	}
 	philo -> last_meal = *philo -> init;
 	if (!make_monitor_thread(&monitor_thread, philo))
 		return (NULL);

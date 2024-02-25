@@ -29,14 +29,12 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 {
 	int				i;
 	unsigned long	start_time;
-	int				start;
 
 	i = 0;
-	start = 0;
+	start_time = get_ms_time();
 	while (i < n)
 	{
 		philosophers[i].init = &start_time;
-		philosophers[i].start = &start;
 		if (pthread_create(&(philosophers[i].thread), NULL,
 				&philosopher_thread, &philosophers[i]) != 0)
 		{
@@ -46,8 +44,6 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 		}
 		i++;
 	}
-	start_time = get_ms_time();
-	start = 1;
 	wait_philosophers(n, philosophers);
 	return (1);
 }
