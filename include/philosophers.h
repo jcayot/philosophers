@@ -53,7 +53,6 @@ int			clear_philosophers(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
 void		*philosopher_thread(void *philo_ptr);
 int			make_monitor_thread(pthread_t *thread, t_philosopher *philosopher);
-void		philo_log(int n, char *status, const int *dead,
-				unsigned long time);
+void		philo_log(t_philosopher *philo, char *status, unsigned long time);
 
 #endif //PHILOSOPHERS_H

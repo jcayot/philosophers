@@ -12,8 +12,10 @@
 
 #include <philosophers.h>
 
-void	philo_log(int n, char *status, const int *dead, unsigned long time)
+void	philo_log(t_philosopher *philo, char *status, unsigned long time)
 {
-	if (!*dead)
-		printf("%lu %d %s\n", time, n, status);
+	pthread_mutex_lock(philo -> dead_mutex);
+	if (!*philo -> dead)
+		printf("%lu %d %s\n", time, philo -> n, status);
+	pthread_mutex_unlock(philo -> dead_mutex);
 }
