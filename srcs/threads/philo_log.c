@@ -14,8 +14,11 @@
 
 void	philo_log(t_philosopher *philo, char *status)
 {
+	unsigned long	time;
+
+	time = stamp(*philo -> init);
 	pthread_mutex_lock(philo -> dead_mutex);
 	if (!*philo -> dead)
-		printf("%lu %d %s\n", stamp(*philo -> init), philo -> n, status);
+		printf("%lu %d %s\n", time, philo -> n, status);
 	pthread_mutex_unlock(philo -> dead_mutex);
 }

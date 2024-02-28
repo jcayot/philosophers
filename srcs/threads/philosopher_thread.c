@@ -25,9 +25,9 @@ void	ft_eat_even(t_philosopher *philo)
 		{
 			philo -> last_meal = get_ms_time();
 			philo_log(philo, "is eating");
-			pthread_mutex_unlock(philo -> eating_mutex);
 			stupid_sleep(philo -> rules.eat_time);
 		}
+		pthread_mutex_unlock(philo -> eating_mutex);
 		pthread_mutex_unlock(philo -> right_fork);
 	}
 	else
@@ -49,9 +49,9 @@ void	ft_eat_odd(t_philosopher *philo)
 	{
 		philo -> last_meal = get_ms_time();
 		philo_log(philo, "is eating");
-		pthread_mutex_unlock(philo -> eating_mutex);
 		stupid_sleep(philo -> rules.eat_time);
 	}
+	pthread_mutex_unlock(philo -> eating_mutex);
 	pthread_mutex_unlock(philo -> left_fork);
 	pthread_mutex_unlock(philo -> right_fork);
 }
