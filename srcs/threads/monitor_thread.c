@@ -32,6 +32,7 @@ int	monitoring_loop(t_philosopher *philo)
 		}
 		pthread_mutex_unlock(&philo->lunch_number_mutex);
 		pthread_mutex_unlock(&philo->dead_mutex);
+		usleep(50);
 		pthread_mutex_lock(&philo -> eating_mutex);
 	}
 	pthread_mutex_unlock(&philo -> eating_mutex);
