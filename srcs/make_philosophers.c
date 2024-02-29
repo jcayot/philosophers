@@ -12,7 +12,7 @@
 
 #include <philosophers.h>
 
-int	clear_philosophers(int n, t_philosopher *philosophers)
+int	clear_mutexs(int n, t_philosopher *philosophers)
 {
 	int	i;
 
@@ -60,14 +60,11 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 		philosophers[i].rules = arg.rules;
 		philosophers[i].dead_mutex = philosophers[0].dead_mutex;
 		if (!make_mutexs(&philosophers[i]))
-			return (clear_philosophers(i, philosophers));
+			return (clear_mutexs(i, philosophers));
 		if (i != 0)
 			philosophers[i - 1].right_fork = &philosophers[i].left_fork;
 		i++;
 	}
-	if (i > 1)
-		philosophers[i - 1].right_fork = &philosophers[0].left_fork;
-	else
-		philosophers[i - 1].right_fork = NULL;
+	philosophers[i - 1].right_fork = &philosophers[0].left_fork;
 	return (1);
 }

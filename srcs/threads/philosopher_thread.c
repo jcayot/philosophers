@@ -12,11 +12,17 @@
 
 #include <philosophers.h>
 
-void	ft_eat_even(t_philosopher *philo)
+void	ft_eat(t_philosopher *philo)
 {
-	pthread_mutex_lock(&philo -> left_fork);
+	if (philo -> n % 2 == 0)
+		pthread_mutex_lock(&philo -> left_fork);
+	else
+		pthread_mutex_lock(philo -> right_fork);
 	philo_log(philo, "has taken a fork");
-	pthread_mutex_lock(philo -> right_fork);
+	if (philo -> n % 2 == 0)
+		pthread_mutex_lock(philo -> right_fork);
+	else
+		pthread_mutex_lock(&philo -> left_fork);
 	philo_log(philo, "has taken a fork");
 	pthread_mutex_lock(&philo -> eating_mutex);
 	philo -> last_meal = get_ms_time();
@@ -25,21 +31,6 @@ void	ft_eat_even(t_philosopher *philo)
 	stupid_sleep(philo -> rules.eat_time);
 	pthread_mutex_unlock(philo -> right_fork);
 	pthread_mutex_unlock(&philo -> left_fork);
-}
-
-void	ft_eat_odd(t_philosopher *philo)
-{
-	pthread_mutex_lock(philo -> right_fork);
-	philo_log(philo, "has taken a fork");
-	pthread_mutex_lock(&philo -> left_fork);
-	philo_log(philo, "has taken a fork");
-	pthread_mutex_lock(&philo -> eating_mutex);
-	philo -> last_meal = get_ms_time();
-	pthread_mutex_unlock(&philo -> eating_mutex);
-	philo_log(philo, "is eating");
-	stupid_sleep(philo -> rules.eat_time);
-	pthread_mutex_unlock(&philo -> left_fork);
-	pthread_mutex_unlock(philo -> right_fork);
 }
 
 void	ft_sleep(t_philosopher *philo)
@@ -57,10 +48,7 @@ void	philosopher_routine(t_philosopher *philo)
 		pthread_mutex_unlock(&philo->lunch_number_mutex);
 		if (philo -> n % 2 != 0)
 			usleep(50);
-		if (philo -> n % 2 == 0)
-			ft_eat_even(philo);
-		else
-			ft_eat_odd(philo);
+		ft_eat(philo);
 		ft_sleep(philo);
 		philo_log(philo, "is thinking");
 		pthread_mutex_lock(&philo->lunch_number_mutex);

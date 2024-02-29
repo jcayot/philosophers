@@ -25,12 +25,12 @@ void	wait_philosophers(int n, t_philosopher *philosopher)
 	}
 }
 
-int	one_philosopher(t_philosopher philosopher)
+int	run_one_philosopher(int die_time)
 {
 	printf("0 has taken a fork\n");
-	stupid_sleep(philosopher.rules.die_time);
+	stupid_sleep(die_time);
 	printf("0 died\n");
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 int	run_philosophers(int n, t_philosopher *philosophers)
@@ -40,8 +40,6 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 
 	i = 0;
 	start_time = get_ms_time();
-	if (n == 1)
-		return (one_philosopher(*philosophers));
 	while (i < n)
 	{
 		philosophers[i].init = &start_time;

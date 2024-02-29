@@ -22,6 +22,8 @@ int	philosophers(int n, char *args[])
 	arg = parse_arguments(n, args);
 	if (arg.n_philos < 1)
 		return (EXIT_FAILURE);
+	else if (arg.n_philos == 1)
+		return (run_one_philosopher(arg.rules.die_time));
 	dead = 0;
 	philosophers = malloc((arg.n_philos) * sizeof (t_philosopher));
 	if (!philosophers)
@@ -30,7 +32,7 @@ int	philosophers(int n, char *args[])
 	if (make_philosophers(arg, &dead, philosophers))
 	{
 		result = run_philosophers(arg.n_philos, philosophers);
-		clear_philosophers(arg.n_philos, philosophers);
+		clear_mutexs(arg.n_philos, philosophers);
 	}
 	free(philosophers);
 	return (result);
