@@ -12,21 +12,6 @@
 
 #include <philosophers.h>
 
-static pthread_mutex_t	*new_mutex(void)
-{
-	pthread_mutex_t	*mutex;
-
-	mutex = malloc(sizeof (pthread_mutex_t));
-	if (!mutex)
-		return (NULL);
-	if (pthread_mutex_init(mutex, NULL) != 0)
-	{
-		free(mutex);
-		return (NULL);
-	}
-	return (mutex);
-}
-
 int	clear_philosophers(int n, t_philosopher *philosophers)
 {
 	int	i;
@@ -34,38 +19,28 @@ int	clear_philosophers(int n, t_philosopher *philosophers)
 	i = 0;
 	while (i < n)
 	{
-		pthread_mutex_destroy(philosophers[i].left_fork);
-		pthread_mutex_destroy(philosophers[i].eating_mutex);
-		pthread_mutex_destroy(philosophers[i].lunch_number_mutex);
-		free(philosophers[i].left_fork);
-		free(philosophers[i].eating_mutex);
-		free(philosophers[i].lunch_number_mutex);
+		pthread_mutex_destroy(&philosophers[i].left_fork);
+		pthread_mutex_destroy(&philosophers[i].eating_mutex);
+		pthread_mutex_destroy(&philosophers[i].lunch_number_mutex);
 		i++;
 	}
-	pthread_mutex_destroy(philosophers->dead_mutex);
-	free(philosophers->dead_mutex);
+	pthread_mutex_destroy(&philosophers->dead_mutex);
 	return (0);
 }
 
 int	make_mutexs(t_philosopher *philosopher)
 {
-	philosopher->left_fork = new_mutex();
-	if (!philosopher->left_fork)
+	if (pthread_mutex_init(&philosopher->left_fork, NULL) != 0)
 		return (0);
-	philosopher->eating_mutex = new_mutex();
-	if (!philosopher->eating_mutex)
+	if (pthread_mutex_init(&philosopher->eating_mutex, NULL) != 0)
 	{
-		pthread_mutex_destroy(philosopher->left_fork);
-		free(philosopher->left_fork);
+		pthread_mutex_destroy(&philosopher->left_fork);
 		return (0);
 	}
-	philosopher->lunch_number_mutex = new_mutex();
-	if (!philosopher->lunch_number_mutex)
+	if (pthread_mutex_init(&philosopher->lunch_number_mutex, NULL) != 0)
 	{
-		pthread_mutex_destroy(philosopher->left_fork);
-		pthread_mutex_destroy(philosopher->eating_mutex);
-		free(philosopher->left_fork);
-		free(philosopher->eating_mutex);
+		pthread_mutex_destroy(&philosopher->left_fork);
+		pthread_mutex_destroy(&philosopher->eating_mutex);
 		return (0);
 	}
 	return (1);
@@ -75,8 +50,7 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 {
 	int				i;
 
-	philosophers[0].dead_mutex = new_mutex();
-	if (!philosophers -> dead_mutex)
+	if (pthread_mutex_init(&philosophers[0].dead_mutex, NULL) != 0)
 		return (0);
 	i = 0;
 	while (i < arg.n_philos)
@@ -88,11 +62,11 @@ int	make_philosophers(t_philo_arg arg, int *dead, t_philosopher *philosophers)
 		if (!make_mutexs(&philosophers[i]))
 			return (clear_philosophers(i, philosophers));
 		if (i != 0)
-			philosophers[i - 1].right_fork = philosophers[i].left_fork;
+			philosophers[i - 1].right_fork = &philosophers[i].left_fork;
 		i++;
 	}
 	if (i > 1)
-		philosophers[i - 1].right_fork = philosophers[0].left_fork;
+		philosophers[i - 1].right_fork = &philosophers[0].left_fork;
 	else
 		philosophers[i - 1].right_fork = NULL;
 	return (1);

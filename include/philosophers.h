@@ -35,12 +35,12 @@ typedef struct s_philosopher
 {
 	pthread_t		thread;
 	int				n;
-	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
 	int				*dead;
-	pthread_mutex_t	*dead_mutex;
-	pthread_mutex_t	*eating_mutex;
-	pthread_mutex_t	*lunch_number_mutex;
+	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	eating_mutex;
+	pthread_mutex_t	lunch_number_mutex;
 	t_rules			rules;
 	unsigned long	last_meal;
 	unsigned long	*init;

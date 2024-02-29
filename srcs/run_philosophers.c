@@ -25,7 +25,7 @@ void	wait_philosophers(int n, t_philosopher *philosopher)
 	}
 }
 
-int one_philosopher(t_philosopher philosopher)
+int	one_philosopher(t_philosopher philosopher)
 {
 	printf("0 has taken a fork\n");
 	stupid_sleep(philosopher.rules.die_time);
