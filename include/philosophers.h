@@ -40,6 +40,7 @@ typedef struct s_philosopher
 	int				*dead;
 	pthread_mutex_t	*dead_mutex;
 	pthread_mutex_t	*eating_mutex;
+	pthread_mutex_t	*lunch_number_mutex;
 	t_rules			rules;
 	unsigned long	last_meal;
 	unsigned long	*init;

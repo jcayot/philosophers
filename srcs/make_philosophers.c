@@ -36,8 +36,10 @@ int	clear_philosophers(int n, t_philosopher *philosophers)
 	{
 		pthread_mutex_destroy(philosophers[i].left_fork);
 		pthread_mutex_destroy(philosophers[i].eating_mutex);
+		pthread_mutex_destroy(philosophers[i].lunch_number_mutex);
 		free(philosophers[i].left_fork);
 		free(philosophers[i].eating_mutex);
+		free(philosophers[i].lunch_number_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(philosophers->dead_mutex);
@@ -55,6 +57,15 @@ int	make_mutexs(t_philosopher *philosopher)
 	{
 		pthread_mutex_destroy(philosopher->left_fork);
 		free(philosopher->left_fork);
+		return (0);
+	}
+	philosopher->lunch_number_mutex = new_mutex();
+	if (!philosopher->lunch_number_mutex)
+	{
+		pthread_mutex_destroy(philosopher->left_fork);
+		pthread_mutex_destroy(philosopher->eating_mutex);
+		free(philosopher->left_fork);
+		free(philosopher->eating_mutex);
 		return (0);
 	}
 	return (1);

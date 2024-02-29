@@ -19,18 +19,22 @@ int	is_starving(unsigned long last_meal, unsigned long die_time)
 
 int	monitoring_loop(t_philosopher *philo)
 {
-	while (1)
+	pthread_mutex_lock(philo -> eating_mutex);
+	while (!is_starving(philo -> last_meal, philo -> rules.die_time))
 	{
+		pthread_mutex_unlock(philo -> eating_mutex);
+		pthread_mutex_lock(philo -> dead_mutex);
+		pthread_mutex_lock(philo -> lunch_number_mutex);
 		if (*philo -> dead || philo -> rules.lunch_number == 0)
-			return (0);
-		if (is_starving(philo -> last_meal, philo -> rules.die_time))
 		{
-			pthread_mutex_lock(philo -> eating_mutex);
-			if (is_starving(philo -> last_meal, philo -> rules.die_time))
-				break ;
-			pthread_mutex_unlock(philo -> eating_mutex);
+			pthread_mutex_unlock(philo->lunch_number_mutex);
+			return (0);
 		}
+		pthread_mutex_unlock(philo->lunch_number_mutex);
+		pthread_mutex_unlock(philo->dead_mutex);
+		pthread_mutex_lock(philo -> eating_mutex);
 	}
+	pthread_mutex_unlock(philo -> eating_mutex);
 	return (1);
 }
 
@@ -50,8 +54,9 @@ void	*monitor_philo(void *philo_ptr)
 			printf("%ld %d died\n", die_time, philosopher -> n);
 		}
 		pthread_mutex_unlock(philosopher -> dead_mutex);
-		pthread_mutex_unlock(philosopher -> eating_mutex);
 	}
+	else
+		pthread_mutex_unlock(philosopher -> dead_mutex);
 	return (NULL);
 }
 
