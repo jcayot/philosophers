@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_ms_time.c                                      :+:      :+:    :+:   */
+/*   stamp.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 12:46:17 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/24 12:46:18 by jcayot           ###   ########.fr       */
+/*   Created: 2024/02/21 14:46:20 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/21 14:46:22 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo_utils.h>
+#include "philo_utils.h"
 
-unsigned long	get_ms_time(void)
+unsigned long	stamp(unsigned long startime)
 {
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	return (get_ms_time() - startime);
 }

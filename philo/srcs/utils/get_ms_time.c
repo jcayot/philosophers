@@ -1,34 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philotoi.c                                         :+:      :+:    :+:   */
+/*   get_ms_time.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 22:17:44 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/18 22:17:47 by jcayot           ###   ########.fr       */
+/*   Created: 2024/02/24 12:46:17 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/24 12:46:18 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo_utils.h>
+#include "philo_utils.h"
 
-int	philotoi(char *s)
+unsigned long	get_ms_time(void)
 {
-	long	n;
+	struct timeval	time;
 
-	if (*s == '+')
-		s++;
-	if (*s < '0' || *s > '9')
-		return (-1);
-	n = 0;
-	while (*s >= '0' && *s <= '9')
-	{
-		n = (n * 10) + (*s - '0');
-		if (n > (long) INT_MAX)
-			return (-1);
-		s++;
-	}
-	if (*s)
-		return (-1);
-	return ((int) n);
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }

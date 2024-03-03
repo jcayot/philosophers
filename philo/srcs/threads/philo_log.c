@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stamp.c                                     :+:      :+:    :+:   */
+/*   philo_log.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/21 14:46:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/21 14:46:22 by jcayot           ###   ########.fr       */
+/*   Created: 2024/02/24 12:39:20 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/24 12:39:21 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo_utils.h>
+#include "philosophers.h"
 
-unsigned long	stamp(unsigned long startime)
+void	philo_log(t_philosopher *philo, char *status)
 {
-	return (get_ms_time() - startime);
+	unsigned long	time;
+
+	time = stamp(*philo -> init);
+	pthread_mutex_lock(&philo -> dead_mutex);
+	if (!*philo -> dead)
+		printf("%lu %d %s\n", time, philo -> n, status);
+	pthread_mutex_unlock(&philo -> dead_mutex);
 }

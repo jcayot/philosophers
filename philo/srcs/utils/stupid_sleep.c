@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo_utils.h>
+#include "philo_utils.h"
 
 void	stupid_sleep(unsigned long mstime)
 {

@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_log.c                                     :+:      :+:    :+:   */
+/*   philotoi.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 12:39:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/24 12:39:21 by jcayot           ###   ########.fr       */
+/*   Created: 2024/02/18 22:17:44 by jcayot            #+#    #+#             */
+/*   Updated: 2024/02/18 22:17:47 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philosophers.h>
+#include "philo_utils.h"
 
-void	philo_log(t_philosopher *philo, char *status)
+int	philotoi(char *s)
 {
-	unsigned long	time;
+	long	n;
 
-	time = stamp(*philo -> init);
-	pthread_mutex_lock(&philo -> dead_mutex);
-	if (!*philo -> dead)
-		printf("%lu %d %s\n", time, philo -> n, status);
-	pthread_mutex_unlock(&philo -> dead_mutex);
+	if (*s == '+')
+		s++;
+	if (*s < '0' || *s > '9')
+		return (-1);
+	n = 0;
+	while (*s >= '0' && *s <= '9')
+	{
+		n = (n * 10) + (*s - '0');
+		if (n > (long) INT_MAX)
+			return (-1);
+		s++;
+	}
+	if (*s)
+		return (-1);
+	return ((int) n);
 }
