@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_log.c                                     :+:      :+:    :+:   */
+/*   is_starving.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcayot <jcayot@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 12:39:20 by jcayot            #+#    #+#             */
-/*   Updated: 2024/02/24 12:39:21 by jcayot           ###   ########.fr       */
+/*   Created: 2024/03/04 16:16:26 by jcayot            #+#    #+#             */
+/*   Updated: 2024/03/04 16:16:30 by jcayot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include <philo_utils.h>
 
-void	philo_log(t_philosopher *philo, char *status)
+int	is_starving(unsigned long last_meal, unsigned long die_time)
 {
-	unsigned long	time;
-
-	time = stamp(*philo -> init);
-	pthread_mutex_lock(&philo -> dead_mutex);
-	if (!*philo -> dead)
-		printf("%lu %d %s\n", time, philo -> n, status);
-	pthread_mutex_unlock(&philo -> dead_mutex);
+	return (get_ms_time() > last_meal + die_time);
 }

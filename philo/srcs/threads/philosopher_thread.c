@@ -12,6 +12,17 @@
 
 #include "philosophers.h"
 
+void	philo_log(t_philosopher *philo, char *status)
+{
+	unsigned long	time;
+
+	time = stamp(*philo -> init);
+	pthread_mutex_lock(&philo -> dead_mutex);
+	if (!*philo -> dead)
+		printf("%lu %d %s\n", time, philo -> n, status);
+	pthread_mutex_unlock(&philo -> dead_mutex);
+}
+
 void	ft_eat(t_philosopher *philo)
 {
 	if (philo -> n % 2 == 0)
@@ -41,33 +52,28 @@ void	ft_sleep(t_philosopher *philo)
 
 void	philosopher_routine(t_philosopher *philo)
 {
-	pthread_mutex_lock(&philo->lunch_number_mutex);
+	pthread_mutex_lock(&philo -> eating_mutex);
 	while (!*philo -> dead
-		&& (philo->rules.lunch_number == -1 || philo->rules.lunch_number > 0))
+		&& (philo -> rules.lunch_number == -1 || philo -> rules.lunch_number > 0))
 	{
-		pthread_mutex_unlock(&philo->lunch_number_mutex);
+		pthread_mutex_unlock(&philo -> eating_mutex);
 		if (philo -> n % 2 != 0)
 			usleep(50);
 		ft_eat(philo);
 		ft_sleep(philo);
 		philo_log(philo, "is thinking");
-		pthread_mutex_lock(&philo->lunch_number_mutex);
+		pthread_mutex_lock(&philo -> eating_mutex);
 		if (philo->rules.lunch_number != -1)
 			philo->rules.lunch_number--;
 	}
-	pthread_mutex_unlock(&philo->lunch_number_mutex);
+	pthread_mutex_unlock(&philo -> eating_mutex);
 }
 
 void	*philosopher_thread(void *philo_ptr)
 {
 	t_philosopher	*philo;
-	pthread_t		monitor_thread;
 
 	philo = (t_philosopher *) philo_ptr;
-	philo -> last_meal = *philo -> init;
-	if (!make_monitor_thread(&monitor_thread, philo))
-		return (NULL);
 	philosopher_routine(philo);
-	pthread_join(monitor_thread, NULL);
 	return (NULL);
 }

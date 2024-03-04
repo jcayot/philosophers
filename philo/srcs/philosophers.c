@@ -12,6 +12,14 @@
 
 #include "philosophers.h"
 
+int	one_philosopher(int die_time)
+{
+	printf("0 has taken a fork\n");
+	stupid_sleep(die_time);
+	printf("0 died\n");
+	return (EXIT_SUCCESS);
+}
+
 int	philosophers(int n, char *args[])
 {
 	t_philo_arg		arg;
@@ -23,7 +31,7 @@ int	philosophers(int n, char *args[])
 	if (arg.n_philos < 1)
 		return (EXIT_FAILURE);
 	else if (arg.n_philos == 1)
-		return (run_one_philosopher(arg.rules.die_time));
+		return (one_philosopher(arg.rules.die_time));
 	dead = 0;
 	philosophers = malloc((arg.n_philos) * sizeof (t_philosopher));
 	if (!philosophers)

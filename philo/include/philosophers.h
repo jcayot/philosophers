@@ -51,9 +51,6 @@ int			make_philosophers(t_philo_arg arg, int *dead,
 				t_philosopher *philosophers);
 int			clear_mutexs(int n, t_philosopher *philosophers);
 int			run_philosophers(int n, t_philosopher *philosophers);
-int			run_one_philosopher(int die_time);
 void		*philosopher_thread(void *philo_ptr);
-int			make_monitor_thread(pthread_t *thread, t_philosopher *philosopher);
-void		philo_log(t_philosopher *philo, char *status);
 
 #endif //PHILOSOPHERS_H

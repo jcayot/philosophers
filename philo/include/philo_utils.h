@@ -22,5 +22,6 @@ int				philotoi(char *s);
 unsigned long	get_ms_time(void);
 unsigned long	stamp(unsigned long startime);
 void			stupid_sleep(unsigned long mstime);
+int				is_starving(unsigned long last_meal, unsigned long die_time);
 
 #endif //PHILO_UTILS_H
