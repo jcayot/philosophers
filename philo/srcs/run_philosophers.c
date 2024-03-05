@@ -25,48 +25,62 @@ void	wait_philosophers(int n, t_philosopher *philosophers)
 	}
 }
 
-int	monitor_philosophers(int n, t_philosopher *philosophers)
+int	check_death(int n, t_philosopher *philos)
 {
 	unsigned long	die_time;
 	int				i;
 
-	while (1)
+	i = 0;
+	while (i < n)
 	{
-		i = 0;
-		while (i < n)
+		pthread_mutex_lock(&philos[i].eating_mutex);
+		if (philos[i].rules.lunch_number != 0
+			&& is_starving(philos[i].last_meal, philos[i].rules.die_time))
 		{
-			pthread_mutex_lock(&philosophers[i].eating_mutex);
-			if (philosophers[i].rules.lunch_number != 0
-				&& is_starving(philosophers[i].last_meal, philosophers[i].rules.die_time))
-			{
-				die_time = stamp(*philosophers[i].init);
-				pthread_mutex_lock(&philosophers[i].dead_mutex);
-				*philosophers[i].dead = 1;
-				printf("%ld %d died\n", die_time, i);
-				pthread_mutex_unlock(&philosophers[i].dead_mutex);
-				pthread_mutex_unlock(&philosophers[i].eating_mutex);
-				return (1);
-			}
-			pthread_mutex_unlock(&philosophers[i].eating_mutex);
-			i++;
+			die_time = stamp(*philos[i].init);
+			pthread_mutex_lock(&philos[i].dead_mutex);
+			*philos[i].dead = 1;
+			printf("%ld %d died\n", die_time, i);
+			pthread_mutex_unlock(&philos[i].dead_mutex);
+			pthread_mutex_unlock(&philos[i].eating_mutex);
+			return (1);
 		}
-		i = 0;
-		while (i < n)
-		{
-			pthread_mutex_lock(&philosophers[i].eating_mutex);
-			if (philosophers[i].rules.lunch_number != 0)
-			{
-				pthread_mutex_unlock(&philosophers[i].eating_mutex);
-				break ;
-			}
-			pthread_mutex_unlock(&philosophers[i].eating_mutex);
-			if (i == n - 1)
-				return (1);
-			i++;
-		}
-		usleep(50);
+		pthread_mutex_unlock(&philos[i].eating_mutex);
+		i++;
 	}
 	return (0);
+}
+
+int	check_finished(int n, t_philosopher *philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		pthread_mutex_lock(&philos[i].eating_mutex);
+		if (philos[i].rules.lunch_number != 0)
+		{
+			pthread_mutex_unlock(&philos[i].eating_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philos[i].eating_mutex);
+		if (i == n - 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	monitor_philosophers(int n, t_philosopher *philos)
+{
+	while (1)
+	{
+		if (check_death(n, philos))
+			return (1);
+		if (check_finished(n, philos))
+			return (1);
+	}
 }
 
 int	run_philosophers(int n, t_philosopher *philosophers)
