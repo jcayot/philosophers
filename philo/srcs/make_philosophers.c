@@ -21,7 +21,6 @@ int	clear_mutexs(int n, t_philosopher *philosophers)
 	{
 		pthread_mutex_destroy(&philosophers[i].left_fork);
 		pthread_mutex_destroy(&philosophers[i].eating_mutex);
-		pthread_mutex_destroy(&philosophers[i].lunch_number_mutex);
 		i++;
 	}
 	pthread_mutex_destroy(philosophers -> dead_mutex);
@@ -36,12 +35,6 @@ int	make_mutexs(t_philosopher *philosopher)
 	if (pthread_mutex_init(&philosopher -> eating_mutex, NULL) != 0)
 	{
 		pthread_mutex_destroy(&philosopher -> left_fork);
-		return (0);
-	}
-	if (pthread_mutex_init(&philosopher -> lunch_number_mutex, NULL) != 0)
-	{
-		pthread_mutex_destroy(&philosopher -> left_fork);
-		pthread_mutex_destroy(&philosopher -> eating_mutex);
 		return (0);
 	}
 	return (1);
