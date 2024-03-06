@@ -38,12 +38,10 @@ int	check_death(int n, t_philosopher *philos)
 			&& is_starving(philos[i].last_meal, philos[i].rules.die_time))
 		{
 			die_time = stamp(*philos[i].init);
-			pthread_mutex_lock(philos -> printf_mutex);
 			pthread_mutex_lock(philos -> dead_mutex);
 			*philos[i].dead = 1;
 			printf("%ld %d died\n", die_time, i);
-            pthread_mutex_unlock(philos -> dead_mutex);
-			pthread_mutex_unlock(philos -> printf_mutex);
+			pthread_mutex_unlock(philos -> dead_mutex);
 			pthread_mutex_unlock(&philos[i].eating_mutex);
 			return (1);
 		}
