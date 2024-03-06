@@ -5,13 +5,12 @@ HEADERS			:= -I ./include
 
 SRCS_DIR		:= srcs
 UTILS_DIR		:= $(SRCS_DIR)/utils
-THREADS_DIR		:= $(SRCS_DIR)/threads
 
 SRCS			:= $(SRCS_DIR)/philosophers.c \
 					$(SRCS_DIR)/parse_arguments.c \
 					$(SRCS_DIR)/make_philosophers.c \
 					$(SRCS_DIR)/run_philosophers.c \
-					$(THREADS_DIR)/philosopher_thread.c \
+					$(SRCS_DIR)/philosopher_thread.c \
 					$(UTILS_DIR)/philotoi.c \
 					$(UTILS_DIR)/get_ms_time.c \
 					$(UTILS_DIR)/get_ms_stamp.c \
