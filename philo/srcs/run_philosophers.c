@@ -20,7 +20,6 @@ void	wait_philosophers(int n, t_philosopher *philosophers)
 	while (i < n)
 	{
 		pthread_join(philosophers[i].thread, NULL);
-		pthread_detach(philosophers[i].thread);
 		i++;
 	}
 }
@@ -34,8 +33,7 @@ int	check_death(int n, t_philosopher *philos)
 	while (i < n)
 	{
 		pthread_mutex_lock(&philos[i].eating_mutex);
-		if (philos[i].rules.lunch_number != 0
-			&& is_starving(philos[i].last_meal, philos[i].rules.die_time))
+		if (is_starving(philos[i].last_meal, philos[i].rules.die_time))
 		{
 			die_time = stamp(*philos[i].init);
 			pthread_mutex_lock(philos -> dead_mutex);
@@ -66,7 +64,12 @@ int	check_finished(int n, t_philosopher *philos)
 		}
 		pthread_mutex_unlock(&philos[i].eating_mutex);
 		if (i == n - 1)
+		{
+			pthread_mutex_lock(philos -> dead_mutex);
+			*philos[i].dead = 1;
+			pthread_mutex_unlock(philos -> dead_mutex);
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -97,13 +100,16 @@ int	run_philosophers(int n, t_philosopher *philosophers)
 		if (pthread_create(&(philosophers[i].thread), NULL,
 				&philosopher_thread, &philosophers[i]) != 0)
 		{
+			pthread_mutex_lock(philosophers -> dead_mutex);
 			*philosophers -> dead = 1;
+			printf("Error creating thread. Exiting\n");
+			pthread_mutex_unlock(philosophers -> dead_mutex);
 			wait_philosophers(i, philosophers);
-			return (0);
+			return (EXIT_FAILURE);
 		}
 		i++;
 	}
 	monitor_philosophers(n, philosophers);
 	wait_philosophers(n, philosophers);
-	return (1);
+	return (EXIT_SUCCESS);
 }

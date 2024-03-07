@@ -38,7 +38,7 @@ void	ft_eat(t_philosopher *philo)
 	pthread_mutex_lock(&philo -> eating_mutex);
 	philo -> last_meal = get_ms_time();
 	philo_log(philo, "is eating");
-	if (philo->rules.lunch_number != -1)
+	if (philo->rules.lunch_number > 0)
 		philo->rules.lunch_number--;
 	pthread_mutex_unlock(&philo -> eating_mutex);
 	stupid_sleep(philo -> rules.eat_time);
@@ -52,8 +52,7 @@ void	*philosopher_thread(void *philo_ptr)
 
 	philo = (t_philosopher *) philo_ptr;
 	pthread_mutex_lock(philo -> dead_mutex);
-	while (!(*philo -> dead)
-		&& (philo->rules.lunch_number == -1 || philo->rules.lunch_number > 0))
+	while (!(*philo -> dead))
 	{
 		pthread_mutex_unlock(philo -> dead_mutex);
 		if (philo -> n % 2 != 0)
@@ -62,6 +61,8 @@ void	*philosopher_thread(void *philo_ptr)
 		philo_log(philo, "is sleeping");
 		stupid_sleep(philo -> rules.sleep_time);
 		philo_log(philo, "is thinking");
+		if (philo -> n % 2 == 0)
+			usleep(50);
 		pthread_mutex_lock(philo -> dead_mutex);
 	}
 	pthread_mutex_unlock(philo -> dead_mutex);

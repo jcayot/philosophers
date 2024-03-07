@@ -20,6 +20,17 @@ int	one_philosopher(int die_time)
 	return (EXIT_SUCCESS);
 }
 
+int	parsing_error(void)
+{
+	printf("Error invalid syntax.\n\n");
+	printf("Usage : \n");
+	printf("./philo ");
+	printf("number_of_philosophers time_to_die time_to_eat time_to_sleep");
+	printf(" (optional) number_of_times_each_philosopher_must_eat\n\n");
+	printf("All arguments must be positive integers.\n");
+	return (EXIT_FAILURE);
+}
+
 int	philosophers(int n, char *args[])
 {
 	t_philo_arg		arg;
@@ -29,7 +40,7 @@ int	philosophers(int n, char *args[])
 
 	arg = parse_arguments(n, args);
 	if (arg.n_philos < 1)
-		return (EXIT_FAILURE);
+		return (parsing_error());
 	else if (arg.n_philos == 1)
 		return (one_philosopher(arg.rules.die_time));
 	dead = 0;
